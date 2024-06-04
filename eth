@@ -1,0 +1,29 @@
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+public class EthCurrentPrice {
+public static void main(String[] args) {
+try {
+URL url = new URL("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd");
+HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+connection.setRequestMethod("GET");
+
+BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+String inputLine;
+StringBuilder response = new StringBuilder();
+while ((inputLine = in.readLine()) != null) {
+response.append(inputLine);
+}
+in.close();
+
+String ethPrice = response.toString().split(":")[2].split("}")[0].replace(""", "").trim();
+
+System.out.println("Current ETH Price: $" + ethPrice);
+} catch (Exception e) {
+System.out.println("An error occurred: " + e.getMessage());
+}
+}
+}
